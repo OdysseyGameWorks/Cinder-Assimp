@@ -1,4 +1,4 @@
-Cinder-Assimp
-============
+# Assimp
 
-`premake5 vs2015`
+
+

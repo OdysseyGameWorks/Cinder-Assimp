@@ -1,121 +1,34 @@
--- https://github.com/premake/premake-core/wiki
+project "Assimp"
+        kind "StaticLib"
+        language "C++"
+        cppdialect "C++17"
+        staticruntime "on"
+        
+        targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+        objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-local action = _ACTION or ""
-
-solution "cinder-assimp"
-    location (action)
-    configurations { "Debug", "Release" }
-    language "C++"
-
-    configuration "vs*"
-
-        platforms {"x64", "x86"}
-        cppdialect "C++11"
+        sysincludedirs {
+            "assimp/include",
+            "assimp/contrib/irrXML",
+            "assimp/contrib/zlib",
+            "assimp/contrib/unzip",
+            "assimp/contrib/rapidjson/include",
+        }
+        
+        includedirs {
+            "assimp/include",
+            "assimp/contrib/irrXML",
+            "assimp/contrib/zlib",
+            "assimp/contrib/rapidjson/include",
+        }
 
         defines {
+
             "_CRT_SECURE_NO_WARNINGS",
             "_CRT_SECURE_NO_DEPRECATE",
-        }
 
-        disablewarnings {
-            "4244",
-            "4305",
-            "4996",
-        }
-
-        flags {
-            "StaticRuntime",
-        }
-
-        configuration "x86"
-            targetdir ("lib/msw/x86")
-
-        configuration "x64"
-            targetdir ("lib/msw/x64")
-
-    -- configuration "vs*uwp"
-
-    --     platforms {"x64", "x86"}
-
-    --     defines {
-    --         "_CRT_SECURE_NO_WARNINGS",
-    --         "_CRT_SECURE_NO_DEPRECATE",
-    --     }
-
-    --     disablewarnings {
-    --         "4244",
-    --         "4305",
-    --         "4996",
-    --     }
-
-    --     flags {
-    --         "StaticRuntime",
-    --     }
-
-    --     configuration "x86"
-    --         targetdir ("lib/msw_uwp/x86")
-
-    --     configuration "x64"
-    --         targetdir ("lib/msw_uwp/x64")
-
-    configuration "macosx"
-        cppdialect "gnu++11"
-        platforms {"x64"}
-        targetdir ("lib/macos")
-
-    flags {
-        "MultiProcessorCompile",
-    }
-
-    configuration "Debug"
-        defines { "DEBUG" }
-        symbols "On"
-        targetsuffix "-d"
-
-    configuration "Release"
-        defines { "NDEBUG" }
-        optimize "On"
-
-    project "cinder-assimp"
-        kind "StaticLib"
-
-        includedirs {
-            "include",
-            "assimp/include",
-            "../../include",
-        }
-        
-        sysincludedirs {
-            "include",
-            "assimp/include",
-            "../../include",
-        }
-        
-        files {
-            "include/**",
-            "src/**",
-        }
-
-    project "assimp"
-        kind "StaticLib"
-
-        sysincludedirs {
-            "assimp/include",
-            "assimp/contrib/irrXML",
-            "assimp/contrib/zlib",
-            "assimp/contrib/rapidjson/include",
-        }
-        
-        includedirs {
-            "assimp/include",
-            "assimp/contrib/irrXML",
-            "assimp/contrib/zlib",
-            "assimp/contrib/rapidjson/include",
-        }
-
-        defines {
-            -- "SWIG",
             "ASSIMP_BUILD_NO_OWN_ZLIB",
+            "ASSIMP_BUILD_ZLIB",
 
             "ASSIMP_BUILD_NO_X_IMPORTER",
             "ASSIMP_BUILD_NO_3DS_IMPORTER",
@@ -151,7 +64,7 @@ solution "cinder-assimp"
             "ASSIMP_BUILD_NO_OPENGEX_IMPORTER",
             "ASSIMP_BUILD_NO_MS3D_IMPORTER",
             "ASSIMP_BUILD_NO_COB_IMPORTER",
-            "ASSIMP_BUILD_NO_BLEND_IMPORTER",
+            -- "ASSIMP_BUILD_NO_BLEND_IMPORTER",
             "ASSIMP_BUILD_NO_Q3BSP_IMPORTER",
             "ASSIMP_BUILD_NO_NDO_IMPORTER",
             "ASSIMP_BUILD_NO_IFC_IMPORTER",
@@ -201,6 +114,14 @@ solution "cinder-assimp"
             "assimp/include/**",
             "assimp/code/Assimp.cpp",
             "assimp/code/BaseImporter.cpp",
+            "assimp/code/BlenderBMesh.cpp",
+            "assimp/code/BlenderCustomData.cpp",
+            "assimp/code/BlenderDNA.cpp",
+            "assimp/code/BlenderLoader.cpp",
+            "assimp/code/SceneCombiner.cpp",
+            "assimp/code/BlenderModifier.cpp",
+            "assimp/code/BlenderScene.cpp",
+            "assimp/code/BlenderTessellator.cpp",
             "assimp/code/ColladaLoader.cpp",
             "assimp/code/ColladaParser.cpp",
             "assimp/code/CreateAnimMesh.cpp",
@@ -239,6 +160,7 @@ solution "cinder-assimp"
             "assimp/code/SGSpatialSort.cpp",
             "assimp/code/SkeletonMeshBuilder.cpp",
             "assimp/code/SpatialSort.cpp",
+            "assimp/code/Subdivision.cpp",
             "assimp/code/TriangulateProcess.cpp",
             "assimp/code/ValidateDataStructure.cpp",
             "assimp/code/Version.cpp",
@@ -254,3 +176,20 @@ solution "cinder-assimp"
             "assimp/code/EmbedTexturesProcess.cpp",
             "assimp/contrib/irrXML/*",
         }
+
+        filter "configurations:Debug"
+            defines "C_DEBUG"
+            runtime "Debug"
+            symbols "on"
+            optimize "on"
+            targetsuffix "-d"
+    
+        filter "configurations:Release"
+            defines "C_RELEASE"
+            runtime "Release"
+            optimize "on"
+    
+        filter "configurations:Dist"
+            defines "C_DIST"
+            runtime "Release"
+            optimize "on"

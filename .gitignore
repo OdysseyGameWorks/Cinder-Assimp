@@ -24,6 +24,9 @@ Eigen/
 Debug/
 Release/
 ipch/
+bin/
+bin-int/
+.vs/
 
 # doxygen generated files
 docs/html

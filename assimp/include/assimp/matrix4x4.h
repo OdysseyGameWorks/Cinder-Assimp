@@ -85,7 +85,7 @@ public:
 
     /** construction from position, rotation and scaling components
      * @param scaling The scaling for the x,y,z axes
-     * @param rotation The rotation as a hamilton quaternion
+     * @param rotation The rotation as a Hamilton quaternion
      * @param position The position for the x,y,z axes
      */
     aiMatrix4x4t(const aiVector3t<TReal>& scaling, const aiQuaterniont<TReal>& rotation,
@@ -144,7 +144,7 @@ public:
     // -------------------------------------------------------------------
     /** @brief Decompose a trafo matrix into its original components
      *  @param scaling Receives the output scaling for the x,y,z axes
-     *  @param rotation Receives the output rotation as a hamilton
+     *  @param rotation Receives the output rotation as a Hamilton
      *   quaternion
      *  @param position Receives the output position for the x,y,z axes
      */
